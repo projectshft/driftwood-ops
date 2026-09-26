@@ -48,8 +48,19 @@ table rewrite.
 Linear tickets referenced in commit messages are in `docs/linear-export`
 for a few of the gnarlier ones, in case the ticket itself gets archived.
 
+## Portal app
+
+The customer-facing app (`parsity-agentic-engineering` repo) calls this
+service's `/portal/*` routes for order/shipment data. Separate repo,
+separate database, auth'd with a shared key (`PORTAL_API_KEY` here,
+`OPS_PORTAL_API_KEY` over there - yes they should probably be named the
+same thing). See `ARCHITECTURE.md`.
+
 ## Status
 
 Mostly stable. Known issues are tracked in Linear, project "OPS". The
 inventory oversell thing (ENG-142) is still open, don't remove the
 manual recount step in the warehouse until that's fixed.
+
+Open work items are in `docs/exercises/` for now instead of Linear since
+they haven't been triaged into a sprint yet.

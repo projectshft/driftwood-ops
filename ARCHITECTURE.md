@@ -10,14 +10,21 @@ db/migrations     <- plain sql, applied by apps/api/scripts/migrate.ts
 api -> postgres (direct)
 api -> rate-engine (http, port 8080)
 rate-engine -> carrier sandbox api (http)
+customer portal app -> api, `/portal/*` routes only (http, shared key)
 
 Nothing here uses queues or workers currently - email sends and rate
 lookups all happen inline in the request. Has come up as something to
 change if volume grows, not urgent yet.
 
-Auth is a single JWT scheme for warehouse/ops staff logins. There isn't
-a customer-facing login at all right now, customers interact through
-Dana's team, not directly.
+Auth is a single JWT scheme for warehouse/ops staff logins. Customers
+now have their own login through the separate portal app
+(`parsity-agentic-engineering` repo - yes the name doesn't match,
+nobody's renamed it), which is a fullstack app with its own postgres db
+for customer accounts. It doesn't share a database with this repo - it
+calls the `/portal/*` endpoints here for order/shipment data, auth'd
+with a shared header key (see `middleware/portalAuth.ts`). This was the
+fast way to ship it, wasn't meant to be permanent. There's no real
+service-to-service auth between the two apps beyond that shared secret.
 
 This doc doesn't get updated often, if something here looks wrong
 trust the code over this file. Most of the actual "why" for decisions

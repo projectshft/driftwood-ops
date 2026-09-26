@@ -9,4 +9,6 @@ export const config = {
   jwtSecret: process.env.JWT_SECRET || "driftwood-dev-secret",
   sendgridKey: process.env.SENDGRID_API_KEY,
   sentryDsn: process.env.SENTRY_DSN,
+  // shared secret for the customer portal service, see middleware/portalAuth.ts
+  portalApiKey: process.env.PORTAL_API_KEY || "dev-portal-key",
 };
