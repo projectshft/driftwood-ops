@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: driftwood
+      POSTGRES_PASSWORD: driftwood
+      POSTGRES_DB: driftwood
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rate-engine:
+    build: ./services/rate-engine
+    ports:
+      - "8080:8080"
+    environment:
+      CARRIER_API_BASE: http://host.docker.internal:9999
+      CARRIER_API_KEY: ${CARRIER_API_KEY}
+
+volumes:
+  pgdata:
