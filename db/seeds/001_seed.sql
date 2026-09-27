@@ -6,7 +6,8 @@ INSERT INTO warehouses (code, name, timezone) VALUES
 INSERT INTO customers (company_name, email, billing_tier) VALUES
   ('Fulfillco', 'ops@fulfillco.example', 'enterprise'),
   ('BrightGear', 'hello@brightgear.example', 'plus'),
-  ('Nimbus Snacks', 'orders@nimbussnacks.example', 'standard');
+  ('Nimbus Snacks', 'orders@nimbussnacks.example', 'standard'),
+  ('O''Brien Retail', 'ops@obrienretail.example', 'standard');
 
 INSERT INTO products (customer_id, sku, name, weight_oz) VALUES
   (1, 'FC-1001', 'Insulated Tumbler', 14.5),
@@ -17,5 +18,5 @@ INSERT INTO products (customer_id, sku, name, weight_oz) VALUES
 INSERT INTO inventory (product_id, warehouse_id, qty_on_hand, qty_reserved, reorder_point) VALUES
   (1, 1, 120, 0, 20),
   (2, 1, 80, 0, 15),
-  (3, 2, 30, 0, 10),
+  (3, 2, 8, 0, 10),
   (4, 3, 200, 0, 40);
