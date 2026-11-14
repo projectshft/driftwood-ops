@@ -1,0 +1,26 @@
+// portal login accounts. this does NOT hold order/shipment data, that
+// stays in the ops db - we just call over there for it. this table's
+// whole job is mapping a login to a customer id in the ops system.
+//
+// nothing links these automatically - CS creates a portal account by
+// hand when a customer asks for one (see docs/setting-up-portal-access.md)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PortalUser {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  passwordHash      String
+  // customer id in the driftwood-ops database - not a foreign key,
+  // there's no way to enforce that across two separate databases
+  opsCustomerId     Int
+  companyName       String
+  createdAt         DateTime @default(now())
+}

@@ -1,3 +1,60 @@
+# Driftwood
+
+> **This is a practice codebase.** Driftwood Logistics is a made-up company,
+> and this repo is what you work in during Parsity's
+> [Intro to Agentic Engineering](https://ai.parsity.io/agentic-engineering)
+> course. It's meant to feel like a codebase you'd inherit at a real job:
+> three languages, two apps, docs that disagree with each other, and a
+> backlog of tickets in `docs/exercises/`. The mess is on purpose. Don't
+> tidy it up before you start - working through it is the course.
+>
+> Everything below this box is written "in character", the way the
+> Driftwood team left it.
+
+## Quick start
+
+You need Node 20+, Docker (or your own Postgres 15+), and Git. Rust and
+Python are only needed for the tickets that touch `services/rate-engine`
+and `scripts/`.
+
+```
+docker compose up -d postgres
+
+cd apps/api
+cp ../../.env.example .env
+npm install
+npm run migrate
+npm run seed
+npm run dev          # api on :4000
+```
+
+In a second terminal:
+
+```
+cd apps/portal
+cp .env.example .env
+npm install
+npm run db:push
+npm run db:seed
+npm run dev          # portal on :3000
+```
+
+Log in to the portal at http://localhost:3000 as
+`hello@brightgear.example` / `password123`.
+
+To call the api directly you need a staff token:
+
+```
+cd apps/api
+curl -H "Authorization: Bearer $(npm run -s token)" localhost:4000/customers
+```
+
+Not using Docker? Create two databases, `driftwood` and
+`driftwood_portal`, owned by a `driftwood` user with password
+`driftwood`, and the same steps work.
+
+---
+
 # driftwood-ops
 
 Internal ops platform for Driftwood Logistics. Handles orders, inventory,
@@ -18,6 +75,7 @@ Then from `apps/api`:
 ```
 npm install
 npm run migrate
+npm run seed
 npm run dev
 ```
 
@@ -50,9 +108,10 @@ for a few of the gnarlier ones, in case the ticket itself gets archived.
 
 ## Portal app
 
-The customer-facing app (`parsity-agentic-engineering` repo) calls this
-service's `/portal/*` routes for order/shipment data. Separate repo,
-separate database, auth'd with a shared key (`PORTAL_API_KEY` here,
+The customer-facing app (`apps/portal`, used to be its own repo until
+we got tired of opening two PRs for everything) calls this service's
+`/portal/*` routes for order/shipment data. Separate app, separate
+database, auth'd with a shared key (`PORTAL_API_KEY` here,
 `OPS_PORTAL_API_KEY` over there - yes they should probably be named the
 same thing). See `ARCHITECTURE.md`.
 
